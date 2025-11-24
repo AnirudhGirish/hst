@@ -92,19 +92,29 @@ export async function POST(request: Request) {
       );
     }
 
-    // Verify OTP against TOTP secret (check current and previous time window)
+    // Verify OTP against TOTP secret
+    // Check current window and 2 previous windows (90 seconds total)
     const currentTimeStep = getCurrentTimeStep();
-    const currentOTP = generateTOTP(user.totp_secret, currentTimeStep);
-    const previousOTP = generateTOTP(user.totp_secret, currentTimeStep - 1);
+    const validOTPs = [
+      generateTOTP(user.totp_secret, currentTimeStep),      // Current window (0-30s)
+      generateTOTP(user.totp_secret, currentTimeStep - 1),  // Previous window (30-60s)
+      generateTOTP(user.totp_secret, currentTimeStep - 2),  // 2 windows ago (60-90s)
+    ];
 
-    const isValid = otp === currentOTP || otp === previousOTP;
+    console.log("[VERIFY] Debug info:");
+    console.log("  - Current time step:", currentTimeStep);
+    console.log("  - User:", userid);
+    console.log("  - Received OTP:", otp);
+    console.log("  - Valid OTPs:", validOTPs);
+
+    const isValid = validOTPs.includes(otp);
 
     if (!isValid) {
       // Log failed authentication
       await supabase.from("auth_logs").insert({
         user_id: userid,
         success: false,
-        error_message: "Invalid OTP",
+        error_message: `Invalid OTP. Expected one of: ${validOTPs.join(", ")}`,
         ip_address: request.headers.get("x-forwarded-for") || "unknown",
         user_agent: request.headers.get("user-agent") || "unknown",
         timestamp: new Date().toISOString(),
@@ -146,13 +156,15 @@ export async function POST(request: Request) {
       .update({ last_login: new Date().toISOString() })
       .eq("user_id", userid);
 
-    // Notify bridge to flush OTP cache
+    // Send OTP_CONSUMED command to device to turn off LED
     try {
-      await fetch(`${BRIDGE_URL}/flush`, {
-        method: "POST",
-      });
+      const bridgeRes = await fetch(`${BRIDGE_URL}/device`, { method: "GET" });
+      if (bridgeRes.ok) {
+        // Bridge is available, send consumed command
+        await fetch(`${BRIDGE_URL}/flush`, { method: "POST" });
+      }
     } catch (bridgeError) {
-      console.warn("Failed to flush bridge OTP cache:", bridgeError);
+      console.warn("Failed to communicate with bridge:", bridgeError);
     }
 
     return NextResponse.json({
