@@ -15,6 +15,10 @@
 </p>
 
 <p align="center">
+  <em>HST is a complete hardware-based authentication system addressing the growing need for accessible, transparent, and robust two-factor authentication.</em>
+</p>
+
+<p align="center">
   <a href="#overview">Overview</a> •
   <a href="#system-architecture">Architecture</a> •
   <a href="#installation-guide">Installation</a> •
