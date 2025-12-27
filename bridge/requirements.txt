@@ -1,0 +1,15 @@
+# Hardware Secure Tokeniser - Bridge Server Dependencies
+# Python 3.8+ required
+
+# Core Framework
+Flask==3.0.0
+flask-cors==4.0.0
+
+# Serial Communication (ESP32)
+pyserial==3.5
+
+# Optional: Production WSGI server
+# gunicorn==21.2.0
+
+# Optional: For enhanced logging
+# python-dotenv==1.0.0

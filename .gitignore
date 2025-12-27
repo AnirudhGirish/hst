@@ -1,0 +1,138 @@
+# ============================================
+# Hardware Secure Tokeniser (HST) - .gitignore
+# ============================================
+
+# ===================
+# Environment Files
+# ===================
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test.local
+.env.production
+.env.production.local
+
+# ===================
+# Dependencies
+# ===================
+node_modules/
+hst/node_modules/
+/.pnp
+.pnp.js
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ===================
+# Build Outputs
+# ===================
+.next/
+hst/.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# ===================
+# Python Virtual Environment
+# ===================
+bridge/env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ===================
+# IDE / Editor
+# ===================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# ===================
+# macOS
+# ===================
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ===================
+# Windows
+# ===================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ===================
+# Linux
+# ===================
+*~
+
+# ===================
+# Logs & Debug
+# ===================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ===================
+# Testing
+# ===================
+coverage/
+.nyc_output/
+*.lcov
+
+# ===================
+# Misc
+# ===================
+*.pem
+*.key
+*.cert
+
+# Vercel
+.vercel
+
+# ESLint
+.eslintcache
+
+# Turbo
+.turbo
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Hardware/Embedded
+*.bin
+*.elf
+*.hex
+*.srec
+
+# Other
+*.bak
+*.backup
